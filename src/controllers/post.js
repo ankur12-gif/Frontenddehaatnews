@@ -14,21 +14,16 @@ const createPost = TryCatch(async (req, res) => {
 
     console.log({title})
 
-    // if (!photos) return next(new Error("Please upload photos", 400));
-    // if (!title || !description || !category) return next(new Error("Please enter all fields"));
+    if (!photos) return next(new Error("Please upload photos", 400));
+    if (!title || !description || !category) return next(new Error("Please enter all fields"));
 
-    // const photosUrl = await uploadToImageKit(photos);
+    const photosUrl = await uploadToImageKit(photos);
 
     const post = await Posts.create({
         title,
         description,
         category,
-        photos: [
-            {
-                public_id: 'hedsdsd', // ✅ ImageKit uses fileId instead of public_id
-                url: "https://ik.imagekit.io/cxa7ojrtpq/uploads/1_Yj9KgxMor.jpg",
-            }
-        ],
+        photos: photosUrl,
     });
 
     myCache.del("allPosts");
